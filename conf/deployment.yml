@@ -1,0 +1,179 @@
+# Custom section is used to store configurations that might be repetative.
+# Please read YAML documentation for details on how to use substitutions and anchors.
+# Deployment file reference
+# https://dbx.readthedocs.io/en/latest/reference/deployment/
+# DevOps for Notebooks-based project 
+# https://dbx.readthedocs.io/en/latest/guides/python/devops/notebook/?h=notebook#devops-for-notebooks-based-project
+
+custom:
+  basic-cluster-props: &basic-cluster-props
+    spark_version: "11.3.x-cpu-ml-scala2.12"
+
+  basic-static-cluster: &basic-static-cluster
+    new_cluster:
+      <<: *basic-cluster-props
+      num_workers: 1
+      node_type_id: "Standard_E8_v3"
+
+environments:
+  default:
+    workflows:
+      #######################################################################################
+      #   Example workflow for integration tests                                            #
+      #######################################################################################
+      - name: "dbx-demo-test-sample-tests"
+        tasks:
+          - task_key: "main"
+            # <<: *basic-static-cluster
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            spark_python_task:
+                python_file: "file://tests/entrypoint.py"
+                package_name: "pytest"
+                # this call supports all standard pytest arguments
+                parameters: ["file:fuse://tests/integration", "--cov=dbx_demo_test"]
+      #############################################################
+      # Production Job.                                           #
+      # Please deploy the Repo to the Production first.           #
+      #############################################################
+      - name: "dbx-demo-test-production-job"
+        schedule:
+          quartz_cron_expression: "0 0 8 * * ?" # every hour https://learn.microsoft.com/en-us/azure/databricks/workflows/jobs/create-run-jobs#schedule-a-job
+          timezone_id: "America/Los_Angeles"  #UTC
+          pause_status: "UNPAUSED"
+        job_clusters:
+          - job_cluster_key: "default"
+            <<: *basic-static-cluster      
+        email_notifications: 
+          on_start: {{ var['EMAIL_NOTIFICATIONS'] }} 
+          on_success: {{ var['EMAIL_NOTIFICATIONS'] }}
+          on_failure: {{ var['EMAIL_NOTIFICATIONS'] }}
+          no_alert_for_skipped_runs: false 
+        tags:
+          jobName: "dbx-demo-test-production-job" # aws.jobName: "dbx-demo-test-production-job"
+        access_control_list:
+          - user_name: "{{ var['OWNER_NAME'] }}" 
+            permission_level: "IS_OWNER"
+          - group_name: "users"
+            permission_level: "CAN_VIEW"
+        tasks:
+          - task_key: "sample_task_a"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Production/dbx-demo-test/notebooks/sample_task_a"
+          - task_key: "sample_task_b"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on:
+              - task_key: "sample_task_a"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Production/dbx-demo-test/notebooks/sample_task_b"
+          - task_key: "sample_task_c"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on: 
+              - task_key: "sample_task_b"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Production/dbx-demo-test/notebooks/sample_task_c"
+
+      #############################################################
+      # Staging Job.                                           #
+      # Please deploy the Repo to the Staging first.           #
+      #############################################################
+      - name: "dbx-demo-test-staging-job"
+        schedule:
+          quartz_cron_expression: "0 0 8 * * ?" # every hour https://learn.microsoft.com/en-us/azure/databricks/workflows/jobs/create-run-jobs#schedule-a-job
+          timezone_id: "America/Los_Angeles" # UTC
+          pause_status: "UNPAUSED"
+        job_clusters:
+          - job_cluster_key: "default"
+            <<: *basic-static-cluster      
+        email_notifications: 
+          on_start: {{ var['EMAIL_NOTIFICATIONS'] }} 
+          on_success: {{ var['EMAIL_NOTIFICATIONS'] }}
+          on_failure: {{ var['EMAIL_NOTIFICATIONS'] }}
+          no_alert_for_skipped_runs: false 
+        tags:
+          jobName: "dbx-demo-test-staging-job" # aws.jobName: "dbx-demo-test-Staging-job"
+        access_control_list:
+          - user_name: "{{ var['OWNER_NAME'] }}" 
+            permission_level: "IS_OWNER"
+          - group_name: "users"
+            permission_level: "CAN_VIEW"
+        tasks:
+          - task_key: "sample_task_a"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Staging/dbx-demo-test/notebooks/sample_task_a"
+          - task_key: "sample_task_b"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on:
+              - task_key: "sample_task_a"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Staging/dbx-demo-test/notebooks/sample_task_b"
+          - task_key: "sample_task_c"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on:
+              - task_key: "sample_task_b"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Staging/dbx-demo-test/notebooks/sample_task_c"
+
+      #############################################################
+      # Development featurexx Job.                                #
+      # Please deploy the Repo to the Development first.          #
+      # Run the followinng command to setup variables             #
+      # dbx configure --enable-inplace-jinja-support              #
+      # export FEATURE_BRANCH=feature10                           # 
+      # echo FEATURE_BRANCH                                       #
+      # To use the variable in the deploymehnt.yml file           #
+      # {{ env['FEATURE_BRANCH'] }}                               #
+      #############################################################
+      - name: "dbx-demo-test-development-{{ env['FEATURE_BRANCH'] }}-job"
+        tags:
+          jobName: "dbx-demo-test-development-{{ env['FEATURE_BRANCH'] }}-job"
+        access_control_list:
+          - user_name: "{{ var['OWNER_NAME'] }}" 
+            permission_level: "IS_OWNER"
+          - group_name: "users"
+            permission_level: "CAN_VIEW"
+        tasks:
+          - task_key: "sample_task_a"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/sample_task_a"
+          - task_key: "sample_task_b"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on:
+              - task_key: "sample_task_a"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/sample_task_b"
+          - task_key: "sample_task_c"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on: 
+              - task_key: "sample_task_b"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/sample_task_c"

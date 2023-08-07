@@ -1,0 +1,26 @@
+[
+    {
+      "Environment": "Development",
+      "Catalog": "dev_catalog",
+      "Landing_Path": "abfss://container@sa.dfs.core.windows.net/landing/dev/",
+      "Bronze_Database": "dev_bronze_db",
+      "Silver_Database": "dev_silver_db",
+      "Gold_Database": "dev_gold_db"
+    },
+    {
+      "Environment": "Staging",
+      "Catalog": "stg_catalog",
+      "Landing_Path": "abfss://container@sa.dfs.core.windows.net/landing/stg/",
+      "Bronze_Database": "stg_bronze_db",
+      "Silver_Database": "stg_silver_db",
+      "Gold_Database": "stg_gold_db"
+    },
+    {
+      "Environment": "Production",
+      "Catalog": "prod_catalog",
+      "Landing_Path": "abfss://container@sa.dfs.core.windows.net/landing/prod/",
+      "Bronze_Database": "prod_bronze_db",
+      "Silver_Database": "prod_silver_db",
+      "Gold_Database": "prod_gold_db"
+    }
+   ]

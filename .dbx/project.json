@@ -1,0 +1,15 @@
+{
+    "environments": {
+        "default": {
+            "profile": "charming-aurora",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/dbx_demo_test",
+                "artifact_location": "dbfs:/Shared/dbx/projects/dbx_demo_test"
+            }
+        }
+    },
+    "inplace_jinja_support": true,
+    "failsafe_cluster_reuse_with_assets": false,
+    "context_based_upload_for_execute": false
+}
