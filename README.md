@@ -5,7 +5,7 @@ Lastly, there are three Gitaction YAML files to achieve Continuous Integration a
 
 Note:
 - I assume you have set up conda, git, gh, databricks cli, and dbx on your local laptop.
-- If you want to run the demonstration with an Azure Service Principal (SP), please refer to the document titled "[[Provision a Service Principal, Generate the SP Token, Update the Token to Downstream Applications](https://github.com/charles138/dbx-demo-test/blob/main/docs/Azure%20Service%20Principal%20Token.md)](./docs/Azure%20Service%20Principal%20Token.md)" to set it up.
+- If you want to run the demonstration with an Azure Service Principal (SP), please refer to the document titled "[Provision a Service Principal, Generate the SP Token, Update the Token to Downstream Applications](./docs/Azure%20Service%20Principal%20Token.md)" to set it up.
 
 ## 1.	Import the Repository to Your GitHub
 ```
