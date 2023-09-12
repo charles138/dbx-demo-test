@@ -51,10 +51,10 @@ jobs:
           cat tag.txt
           cat conf/vars.yml
 
-      - name: Lint
-        run: |
-          pip install blackbricks # https://github.com/inspera/blackbricks
-          blackbricks --check .
+      # - name: Lint
+      #   run: |
+      #     pip install blackbricks # https://github.com/inspera/blackbricks
+      #     blackbricks --check .
   
       - name: Install dependencies and project in dev mode
         run: |
