@@ -204,3 +204,12 @@ environments:
               base_parameters: 
                 top_k: "50"
                 top_l: "60"
+          - task_key: "check_rowcount_schema"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on: 
+              - task_key: "sample_task_c"
+            # job_cluster_key: "default"
+            existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
+            notebook_task:     
+              notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/run_unit_tests"

@@ -34,11 +34,11 @@ setup(
     setup_requires=["setuptools","wheel"],
     install_requires=PACKAGE_REQUIREMENTS,
     extras_require={"local": LOCAL_REQUIREMENTS, "test": TEST_REQUIREMENTS},
-    entry_points = {
-        "console_scripts": [
-            "etl = dbx_demo_test.tasks.sample_etl_task:entrypoint",
-            "ml = dbx_demo_test.tasks.sample_ml_task:entrypoint",
-    ]},
+    # entry_points = {
+    #     "console_scripts": [
+    #         "etl = dbx_demo_test.tasks.sample_etl_task:entrypoint",
+    #         "ml = dbx_demo_test.tasks.sample_ml_task:entrypoint",
+    # ]},
     version=__version__,
     description="",
     author="",
