@@ -63,6 +63,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Production/dbx-demo-test/notebooks/sample_task_a"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
           - task_key: "sample_task_b"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -72,6 +75,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Production/dbx-demo-test/notebooks/sample_task_b"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
           - task_key: "sample_task_c"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -81,6 +87,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Production/dbx-demo-test/notebooks/sample_task_c"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
 
       #############################################################
       # Staging Job.                                           #
@@ -114,6 +123,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Staging/dbx-demo-test/notebooks/sample_task_a"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
           - task_key: "sample_task_b"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -123,6 +135,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Staging/dbx-demo-test/notebooks/sample_task_b"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
           - task_key: "sample_task_c"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -132,6 +147,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Staging/dbx-demo-test/notebooks/sample_task_c"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
 
       #############################################################
       # Development featurexx Job.                                #
@@ -159,6 +177,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/sample_task_a"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
           - task_key: "sample_task_b"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -168,6 +189,9 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/sample_task_b"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
           - task_key: "sample_task_c"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -177,3 +201,6 @@ environments:
             existing_cluster_id: "{{ var['CLUSTER_ID'] }}"
             notebook_task:     
               notebook_path: "/Repos/Development/dbx-demo-test-{{ env['FEATURE_BRANCH'] }}/notebooks/sample_task_c"
+              base_parameters: 
+                top_k: "50"
+                top_l: "60"
