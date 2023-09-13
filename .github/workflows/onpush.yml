@@ -56,9 +56,9 @@ jobs:
       #     pip install blackbricks # https://github.com/inspera/blackbricks
       #     blackbricks --check .
   
-      - name: Install dependencies and project in dev mode
-        run: |
-          pip install -e ".[local,test]"
+      # - name: Install dependencies and project in dev mode
+      #   run: |
+      #     pip install -e ".[local,test]"
 
       # - name: Run unit tests
       #   run: |
