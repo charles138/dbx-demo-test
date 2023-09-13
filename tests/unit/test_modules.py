@@ -16,6 +16,9 @@ table_input_df = spark.read.table('hive_metastore.default.sklearn_housing')
 # @pytest.fixture
 # def table_input_df():
 #     return spark.read.table('default.sklearn_housing')
+# actual_row_count = 10
+# expected_row_count = 11
+# assert actual_row_count == expected_row_count, f'INVALID ROW COURT table contains actual row count {actual_row_count} instead of {expected_row_count}'
 
 def test_table_row_count():  
     assert table_input_df.count() == row_count
