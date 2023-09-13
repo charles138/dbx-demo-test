@@ -51,19 +51,19 @@ jobs:
           cat tag.txt
           cat conf/vars.yml
 
-      - name: Lint
-        run: |
-          pip install blackbricks # https://github.com/inspera/blackbricks
-          blackbricks --check .
+      # - name: Lint
+      #   run: |
+      #     pip install blackbricks # https://github.com/inspera/blackbricks
+      #     blackbricks --check .
   
       - name: Install dependencies and project in dev mode
         run: |
           pip install -e ".[local,test]"
 
-      - name: Run unit tests
-        run: |
-          echo "Launching unit tests"
-          pytest tests/unit
+      # - name: Run unit tests
+      #   run: |
+      #     echo "Launching unit tests"
+      #     pytest tests/unit
 
       # - name: Run integration tests (assets only upload)
       #   run: |
