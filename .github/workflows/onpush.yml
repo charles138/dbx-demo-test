@@ -89,5 +89,5 @@ jobs:
           # deploy development job
           echo $FEATURE_BRANCH
           dbx deploy dbx-demo-test-development-${{ github.ref_name }}-job --jinja-variables-file=conf/vars.yml
-          dbx launch dbx-demo-test-development-${{ github.ref_name }}-job
+          # dbx launch dbx-demo-test-development-${{ github.ref_name }}-job
           
